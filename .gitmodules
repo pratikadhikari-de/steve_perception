@@ -51,3 +51,6 @@
 [submodule "src/joystick_drivers"]
 	path = src/joystick_drivers
 	url = https://github.com/ros-drivers/joystick_drivers.git
+[submodule "src/neo_simulation2"]
+	path = src/neo_simulation2
+	url = https://github.com/RiddheshMore/neo_simulation2.git
