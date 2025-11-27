@@ -41,6 +41,7 @@ docker run -it --rm \
 | Permission denied | `sudo usermod -aG docker $USER` then logout/login |
 | Can't find base image | Check internet connection |
 | X11 forwarding fails | Run `xhost +local:docker` on host |
+| CMake cache errors | Run `rm -rf build install log` inside container |
 
 ## 📋 What's Included
 
@@ -58,6 +59,3 @@ docker run -it --rm \
 2. ✅ Fixed `LegacyKeyValueFormat` warning - Updated ENV syntax
 3. ✅ Build now completes with ZERO warnings
 
-## 📞 Need Help?
-
-See detailed troubleshooting in `DOCKER_TEST_RESULTS.md`

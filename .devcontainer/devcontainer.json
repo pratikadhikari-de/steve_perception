@@ -2,20 +2,22 @@
     "name": "ROS Development Container",
     "privileged": true,
     "remoteUser": "${localEnv:USER}",
-    "build": {
-        "dockerfile": "Dockerfile",
-        "args": {
-            "USERNAME": "${localEnv:USER}",
-            "DOCKER_REPO": "osrf/ros",
-            "ROS_DISTRO": "humble",
-            "IMAGE_SUFFIX": "-desktop-full"
-        }
-    },
+    "image": "ghcr.io/riddheshmore/ros2-mmo700:latest",
+    // Uncomment below to rebuild from Dockerfile instead:
+    // "build": {
+    //     "dockerfile": "Dockerfile",
+    //     "args": {
+    //         "USERNAME": "${localEnv:USER}",
+    //         "DOCKER_REPO": "osrf/ros",
+    //         "ROS_DISTRO": "humble",
+    //         "IMAGE_SUFFIX": "-desktop-full"
+    //     }
+    // },
     "workspaceFolder": "/home/ws",
     "workspaceMount": "source=${localWorkspaceFolder},target=/home/ws,type=bind",
     "customizations": {
         "vscode": {
-            "extensions":[
+            "extensions": [
                 "ms-vscode.cpptools",
                 "ms-vscode.cpptools-themes",
                 "twxs.cmake",
@@ -32,8 +34,10 @@
     },
     "runArgs": [
         "--net=host",
-        "-e", "DISPLAY=${env:DISPLAY}",
-        "--gpus", "all"
+        "-e",
+        "DISPLAY=${env:DISPLAY}",
+        "--gpus",
+        "all"
     ],
     "mounts": [
         "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind,consistency=cached",

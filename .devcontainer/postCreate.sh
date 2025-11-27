@@ -1,4 +1,7 @@
 #!/bin/bash
+# Clean any stale build artifacts to prevent CMake cache errors
+rm -rf /home/ws/build /home/ws/install /home/ws/log
+
 #mkdir -p src
 sudo rosdep update
 sudo rosdep install --from-paths /home/ws/src --ignore-src -y
