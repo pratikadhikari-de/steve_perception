@@ -21,7 +21,9 @@ RUN apt-get update && apt-get upgrade -y && \
     ros-$ROS_DISTRO-diagnostic-updater ros-$ROS_DISTRO-launch-pytest ros-$ROS_DISTRO-moveit-kinematics ros-$ROS_DISTRO-moveit-planners-ompl \
     ros-$ROS_DISTRO-moveit-ros-move-group ros-$ROS_DISTRO-moveit-ros-visualization ros-$ROS_DISTRO-moveit-servo ros-$ROS_DISTRO-moveit-simple-controller-manager \
     ros-$ROS_DISTRO-ur-description ros-$ROS_DISTRO-warehouse-ros-sqlite ros-$ROS_DISTRO-navigation2 ros-$ROS_DISTRO-nav2-common \
-    ros-$ROS_DISTRO-slam-toolbox ros-$ROS_DISTRO-phidgets-spatial
+    ros-$ROS_DISTRO-slam-toolbox ros-$ROS_DISTRO-phidgets-spatial \
+    ros-$ROS_DISTRO-gazebo-ros-pkgs ros-$ROS_DISTRO-ros2-control ros-$ROS_DISTRO-ros2-controllers \
+    ros-$ROS_DISTRO-gazebo-ros2-control ros-$ROS_DISTRO-teleop-twist-keyboard
 ENV SHELL /bin/bash
 
 # Source ROS environment automatically
