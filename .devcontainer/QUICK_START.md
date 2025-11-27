@@ -1,36 +1,49 @@
-# Docker Quick Start Guide
+# DevContainer Quick Start Guide
 
-## ✅ Status: TESTED & WORKING
+## ✅ Status: READY TO USE
 
-The Dockerfile has been tested and verified to work correctly.
+This workspace uses a pre-built Docker image from GitHub Container Registry.
 
-## 🚀 Quick Start (3 Options)
+## 🚀 Quick Start for New Users
 
-### Option 1: VSCode DevContainer (Easiest)
+### Option 1: VSCode DevContainer (Recommended)
 ```bash
-# 1. Open workspace in VSCode
-# 2. Press Ctrl+Shift+P
-# 3. Select "Dev Containers: Reopen in Container"
+# 1. Clone the repository
+git clone <repository-url>
+cd steve_ros2_ws
+
+# 2. Open workspace in VSCode
+code .
+
+# 3. Reopen in Container
+# Press Ctrl+Shift+P or F1
+# Select "Dev Containers: Reopen in Container"
+# VSCode will automatically pull the image!
 ```
 
-### Option 2: Manual Build
+### Option 2: Pull and Run Image Directly
 ```bash
-cd /path/to/steve_ros2_ws
+# Pull the pre-built image
+sudo docker pull ghcr.io/riddheshmore/ros2-mmo700:latest
 
-docker build -f .devcontainer/Dockerfile \
-  --build-arg USERNAME=$(whoami) \
-  -t steve_ros2:latest .
-```
-
-### Option 3: Run Existing Image
-```bash
-docker run -it --rm \
+# Run interactively
+sudo docker run -it --rm \
   --net=host \
   -e DISPLAY=$DISPLAY \
   -v /tmp/.X11-unix:/tmp/.X11-unix \
-  --gpus all \
-  --mount type=bind,source=$(pwd),target=/home/ws \
-  steve_ros2:latest bash
+  -v $(pwd):/home/ws \
+  ghcr.io/riddheshmore/ros2-mmo700:latest bash
+```
+
+### Option 3: Build Locally (Advanced)
+Only needed if you want to rebuild the image from scratch:
+
+```bash
+cd .devcontainer
+
+docker build -f Dockerfile \
+  --build-arg USERNAME=$(whoami) \
+  -t custom_ros2:latest .
 ```
 
 ## 🔧 Common Issues
@@ -53,9 +66,17 @@ docker run -it --rm \
 ✅ ros2_control  
 ✅ All project dependencies  
 
-## 📝 Changes Made (2025-11-27)
+## 📝 Recent Changes
 
+**2025-11-27 - Migrated to GHCR**
+1. ✅ Docker image now hosted on GitHub Container Registry
+2. ✅ Image: `ghcr.io/riddheshmore/ros2-mmo700:latest`
+3. ✅ No local build needed - image pulls automatically
+4. ✅ Colleagues can use the workspace immediately after clone
+
+**Previous - Dockerfile Improvements**
 1. ✅ Fixed `InvalidDefaultArgInFrom` warning - Moved ARG before FROM
 2. ✅ Fixed `LegacyKeyValueFormat` warning - Updated ENV syntax
-3. ✅ Build now completes with ZERO warnings
+3. ✅ Build completes with ZERO warnings
+
 
