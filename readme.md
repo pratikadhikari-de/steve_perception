@@ -1,148 +1,71 @@
-# ROS2 MMO-700 Workspace - Quick Start
 
-## For New Users / Colleagues
 
-This workspace is pre-configured with a Docker container that includes all dependencies and packages.
+## How to Run the Simulation
 
-### Prerequisites
-
-- Docker installed
-- VS Code with "Dev Containers" extension (for VS Code method)
-- Git
-
-### Quick Start (3 steps!)
-
-#### 1. Clone the repository
+### 1. Clone the repository (with submodules)
 ```bash
-git clone <your-repository-url>
-cd steve_ros2_ws
+git clone --recurse-submodules <your-main-repo-url>
+cd <your-main-repo>
 ```
 
-#### 2. Open in VS Code
+### 2. Build the workspace
 ```bash
-code .
-```
-
-#### 3. Reopen in Container
-- Press `F1` (or `Ctrl+Shift+P`)
-- Type and select: **"Dev Containers: Reopen in Container"**
-- Wait for the Docker image to pull (first time only, ~5-10 minutes)
-
-**Done!** You now have a fully configured ROS2 environment!
-
----
-
-## What's Included in the Docker Image?
-
-The Docker image (`ghcr.io/riddheshmore/ros2-mmo700:latest`) includes:
-
-✅ **ROS2 Humble** (Desktop Full)  
-✅ **Navigation2** & **SLAM Toolbox**  
-✅ **MoveIt2** for motion planning  
-✅ **Gazebo** with ros2_control  
-✅ **Custom robot descriptions** (MMO-700, UR arms, Robotiq grippers)  
-✅ **All workspace packages pre-built**  
-
----
-
-## Running Simulations
-
-Once inside the container:
-
-### Launch the MMO-700 Robot in Gazebo
-
-Run the following commands inside the container:
-
-```bash
-# inside container
-cd /home/ws
-
-# update submodules if needed
-git submodule update --init --recursive --force || true
-
 source /opt/ros/humble/setup.bash
-
-# Install dependencies
-rosdep install --from-paths src/neo_simulation2 --ignore-src -r -y || true
-
-# Build the simulation package
-colcon build --packages-select neo_simulation2 --symlink-install
-
-source install/setup.bash
-
-# Launch the simulation
-ros2 launch neo_simulation2 simulation.launch.py    my_robot:=mmo_700 world:=neo_workshop arm_type:=ur5e include_pan_tilt:=true
+colcon build --symlink-install
 ```
 
-### Teleop Control
+### 3. Source the workspace
 ```bash
-ros2 run teleop_twist_keyboard teleop_twist_keyboard
-```
-
-### View in RViz
-```bash
-rviz2
-```
-
----
-
-## Building Packages
-
-If you modify source code:
-
-```bash
-cd /home/ws
-colcon build --packages-select <package_name>
 source install/setup.bash
 ```
 
----
 
-## Alternative: Run Without VS Code
-
-If you prefer command line:
-
+### 4. Launch the simulation
+Basic launch:
 ```bash
-docker pull ghcr.io/riddheshmore/ros2-mmo700:latest
-
-docker run -it --rm \
-  -v $(pwd):/home/ws \
-  --network host \
-  -e DISPLAY=$DISPLAY \
-  -v /tmp/.X11-unix:/tmp/.X11-unix \
-  --gpus all \
-  ghcr.io/riddheshmore/ros2-mmo700:latest bash
+ros2 launch neo_simulation2 simulation.launch.py
 ```
 
----
-
-## Troubleshooting
-
-### Image is private / access denied
-If the Docker image is private, you'll need to:
-1. Get a GitHub Personal Access Token from an admin
-2. Login to GHCR:
-   ```bash
-   docker login ghcr.io -u Riddheshmore
-   # Use the PAT as password
-   ```
-
-### Display issues with GUI
-Make sure X11 forwarding is enabled:
+#### Example: Launch with custom robot, world, arm, and pan-tilt
 ```bash
-xhost +local:docker
+ros2 launch neo_simulation2 simulation.launch.py \
+  my_robot:=mmo_700 world:=neo_workshop arm_type:=ur5e include_pan_tilt:=true
 ```
 
+### 5. SLAM and Localization
+We have provided dedicated launch files for running SLAM and Localization with the simulation.
+
+#### SLAM Simulation
+This launches the simulation with the MMO-700 robot and starts SLAM Toolbox for mapping.
+```bash
+ros2 launch neo_nav2_bringup slam_simulation.launch.py
+```
+
+#### Localization Simulation
+This launches the simulation and starts AMCL for localization. You can specify a map file.
+```bash
+ros2 launch neo_nav2_bringup localization_simulation.launch.py map:=/path/to/your/map.yaml
+```
+
+### Visuals
+![Gazebo Simulation](images/gazebo.png)
+![RViz Visualization](images/rviz.png)
+
+
+### 6. (Optional) Using Docker
+- Build the Docker image:
+  ```bash
+  docker build --build-arg DOCKER_REPO=osrf/ros --build-arg ROS_DISTRO=humble --build-arg IMAGE_SUFFIX=-desktop-full --build-arg USERNAME=$USER -t test_ros2_sim_gazebo:latest -f .devcontainer/Dockerfile .
+  ```
+- Run the container:
+  ```bash
+  docker run -it --rm --net=host -e DISPLAY=$DISPLAY --gpus all -v /tmp/.X11-unix:/tmp/.X11-unix -v $(pwd):/home/ws test_ros2_sim_gazebo:latest
+  ```
+
 ---
-
-## More Information
-
-- See `.devcontainer/DOCKER_IMAGE.md` for Docker management details
-- See `.devcontainer/QUICK_START.md` for devcontainer specifics
-- Check `src/` directory for package source code
+For more details, see the [Neobotix ROS2 simulation documentation](https://neobotix-docs.de/ros/ros2/simulation_classic.html) and the [modern Gazebo migration guide](https://neobotix-docs.de/ros/ros2/simulation_modern.html).
 
 ---
+Since the classic gazebo has reached End of Life, There will be no further updates to this packages. 
 
-## Contact
-
-For issues or questions, contact the repository maintainer.
+All the robots in this packages have been migrated to modern Gazebo with some more additional features. More information about the installation and usage of the new modern Gazebo simulation can be [found in our documentation.](https://neobotix-docs.de/ros/ros2/simulation_modern.html)
