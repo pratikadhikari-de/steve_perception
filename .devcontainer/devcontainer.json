@@ -2,17 +2,15 @@
     "name": "ROS Development Container",
     "privileged": true,
     "remoteUser": "${localEnv:USER}",
-    "image": "ghcr.io/riddheshmore/ros2-mmo700:latest",
-    // Uncomment below to rebuild from Dockerfile instead:
-    // "build": {
-    //     "dockerfile": "Dockerfile",
-    //     "args": {
-    //         "USERNAME": "${localEnv:USER}",
-    //         "DOCKER_REPO": "osrf/ros",
-    //         "ROS_DISTRO": "humble",
-    //         "IMAGE_SUFFIX": "-desktop-full"
-    //     }
-    // },
+    "build": {
+        "dockerfile": "Dockerfile",
+        "args": {
+            "USERNAME": "${localEnv:USER}",
+            "DOCKER_REPO": "osrf/ros",
+            "ROS_DISTRO": "humble",
+            "IMAGE_SUFFIX": "-desktop-full"
+        }
+    },
     "workspaceFolder": "/home/ws",
     "workspaceMount": "source=${localWorkspaceFolder},target=/home/ws,type=bind",
     "customizations": {

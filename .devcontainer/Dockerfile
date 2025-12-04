@@ -1,14 +1,10 @@
-# Define base image args before FROM
 ARG DOCKER_REPO=osrf/ros
 ARG ROS_DISTRO=humble
 ARG IMAGE_SUFFIX=-desktop-full
-
 FROM $DOCKER_REPO:$ROS_DISTRO$IMAGE_SUFFIX
-
-# Define user args after FROM (defaults to match typical host)
-ARG USERNAME=ritz
+ARG USERNAME
 ARG USER_UID=1000
-ARG USER_GID=1000
+ARG USER_GID=$USER_UID
 
 # Make apt non-interactive
 ARG DEBIAN_FRONTEND=noninteractive
