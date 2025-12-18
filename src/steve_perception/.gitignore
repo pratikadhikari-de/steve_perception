@@ -1,0 +1,12 @@
+# Python runtime
+__pycache__/
+*.pyc
+*.pyo
+
+# Runtime artifacts
+data/
+*.db
+*.bag
+rosbag2_*/
+data/*
+!data/.gitkeep
